@@ -10,31 +10,27 @@ import {
   TouchableOpacity,
   Animated,
   Image,
-  PanResponder,
-  Navigator
+  PanResponder
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
 
-import NextScene from './app/components/Component1/NextScene.js';
-import Component1 from './app/components/Component1/Component1.js';
-const pic = require('./app/puppy.jpg')
+import Component1 from './Component1.js';
+const pic = require('../../cutest-puppy-pics.jpg')
 
-
-export default class techTalkDemo extends Component {
+export default class NextScene extends Component {
   constructor(){
     super()
     this.state = {
     commentArray: [
-      {date: '2017/6/11', comment: 'This is the cutest puppy!!'},
-      {date: '2017/6/11', comment: 'Warm fuzzy furball!!'},
+      {date: '2017/6/11', comment: 'Im literally dying right now!!'},
+      {date: '2017/6/11', comment: 'puppies rule!!'},
       {date: '2017/6/11', comment: 'puppy puppy puppy'}
     ],
     commentText: '',
     }
   }
   static navigationOptions = {
-    title: 'Welcome to PuppyPost1'
-  }
+    title: 'Welcome to PuppyPost2',
+  };
 
   addComment(){
     if(this.state.commentText){
@@ -51,16 +47,9 @@ export default class techTalkDemo extends Component {
     this.state.commentArray.splice(key,1);
     this.setState({commentArray: this.state.commentArray})
   }
-  _renderScene(route, navigator) {
-    if (route.id === 1) {
-      return <techTalkDemo navigator={navigator} />
-    } else if (route.id === 2) {
-      return <PageTwo navigator={navigator} />
-    }
-  }
 
-  _handlePress() {
-    this.props.navigator.push({id: 2,});
+  renderScene(){
+
   }
 
   render() {
@@ -68,52 +57,47 @@ export default class techTalkDemo extends Component {
     let comments = this.state.commentArray.map((val,index)=>{
       return (<Component1 key={index} keyval={index} val={val} width={this.state.width} height={this.state.height} deleteMethod={()=>this.deleteComment(index)} />)
     })
-    const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
-      
-        <Image source={pic} style={styles.backgroundImage}>
-          <View style={styles.header}>
-              <Text style={styles.headerText}> #PuppyMania </Text>
-          </View>
-          <TouchableOpacity onPress={() => navigate('Chat')} title="NextScene">
-            <View style={{
-              flex: 1, 
-              backgroundColor: 'rgba(0,0,0,0)', 
-              justifyContent: 'center',
-              paddingTop: 20 }} >
-              <Text style={{
-              backgroundColor: 'rgba(0,0,0,0)', 
-              paddingRight: 40, 
-              height: 50 }}> NEXT > </Text>
+          <View style={styles.container}>
+          
+              <Image source={pic} style={styles.backgroundImage}>
+                <View style={styles.header}>
+                  <Text style={styles.headerText}> #PuppyGram </Text>
+                </View>
+                  <TouchableOpacity>
+                        <View style={{
+                          flex: 1, 
+                          backgroundColor: 'rgba(0,0,0,0)', 
+                          justifyContent: 'center',
+                          paddingTop: 20 }} >
+                          <Text style={{
+                          backgroundColor: 'rgba(0,0,0,0)', 
+                          paddingRight: 40, 
+                          height: 50 }}> NEXT > </Text>
+                        </View>
+                  </TouchableOpacity>
+              </Image>
+
+            <ScrollView style={styles.scrollContainer}>
+              {comments}
+            </ScrollView>
+
+            <View style={styles.footer}>
+              <TextInput 
+              style={styles.textInput} 
+              onChangeText={(commentText)=> this.setState({commentText})} 
+              value={this.state.commentText} 
+              placeholder='< New Comment Here! >' 
+              placeholderTextColor='white'></TextInput>
+              <TouchableOpacity onPress={this.addComment.bind(this)} style={styles.addButton}>
+                <Text style={styles.addButtonText}> + </Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </Image>
 
-        <ScrollView style={styles.scrollContainer}>
-          {comments}
-        </ScrollView>
-
-        <View style={styles.footer}>
-          <TextInput style={styles.textInput} onChangeText={(commentText)=> this.setState({commentText})} value={this.state.commentText} placeholder='< New Comment Here! >' placeholderTextColor='white'></TextInput>
-
-          <TouchableOpacity onPress={this.addComment.bind(this)} style={styles.addButton}>
-            <Text style={styles.addButtonText}> + </Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
+          </View>
     );
   }
-
 }
-
-const SimpleApp = StackNavigator({
-  Home: { screen: techTalkDemo },
-  Chat: { screen: NextScene }
-});
-
-AppRegistry.registerComponent('techTalkDemo', () => SimpleApp);
 
 const styles = StyleSheet.create({
   container: {
@@ -187,4 +171,5 @@ const styles = StyleSheet.create({
     color: '#48BBEC'
   }
 });
+
 
